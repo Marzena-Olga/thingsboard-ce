@@ -31,6 +31,10 @@ env:
 nameOverride: ""
 fullnameOverride: ""
 
+thingsboard:
+  labels:
+    values: 4.2.1
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -49,7 +53,7 @@ ingress:
     - chart-example.local
   # Enable or disable tls, same host as above
   tls: false
-  
+
 node:
   # kind can be either Deployment or StatefulSet
   kind: StatefulSet
@@ -333,7 +337,7 @@ cassandra:
       memory: 1Gi
 
 
-ppostgresql-ha:
+postgresql-ha:
   nameOverride: pg
   postgresql:
     database: thingsboard
@@ -354,9 +358,9 @@ ppostgresql-ha:
       requests:
         cpu: 1000m
         memory: 2Gi
-
   postgresqlImage:
-    tag: 13
+    tag: 16
+
   pgpool:
     adminPassword: setplease
     replicaCount: 1
@@ -405,10 +409,7 @@ kafka:
     imagePullPolicy: Always
   listeners:
     client:
-      containerPort: 9092
       protocol: PLAINTEXT #SASL_PLAINTEXT
-      name: CLIENT
-      sslClientAuth: ""
   service:
     name: thingsboard-kafka
     port: 9092
@@ -422,3 +423,5 @@ kafka:
   zookeeper:
     persistence:
       enabled: false
+    containerPorts:
+      client: 2181
